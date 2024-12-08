@@ -39,7 +39,7 @@ export default function Chat() {
         }
   
         const res = await axios.post(
-          "http://127.0.0.1:3000/api/v1/user/check-auth",
+          "https://backend.100xprojects.online/api/v1/user/check-auth",
           {}, // Empty body
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -80,7 +80,7 @@ export default function Chat() {
         }
 
         const response = await axios.post(
-          "http://127.0.0.1:3000/api/v1/user/chat/chat",
+          "https://backend.100xprojects.online/api/v1/user/chat/chat",
           { userMessage: input },
           { headers: { Authorization: `Bearer ${token}` } }
         );

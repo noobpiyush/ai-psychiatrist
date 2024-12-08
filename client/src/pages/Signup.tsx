@@ -27,7 +27,7 @@ export default function SignUp() {
     // Here you would typically send the form data to your backend
     console.log('Form submitted:', formData.name, formData.email, formData.password)
 
-    const response = await axios.post("http://localhost:3000/api/v1/user/signup", formData)
+    const response = await axios.post("https://backend.100xprojects.online/api/v1/user/signup", formData)
       
 
     if (response.status != 201) {
