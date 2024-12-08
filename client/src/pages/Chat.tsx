@@ -20,9 +20,15 @@ type Chat = {
 };
 
 export default function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 1,
+      content: "Hi, I’m here to listen. Can you share how you’re feeling today?",
+      sender: "ai",
+    },
+  ]);
   const [input, setInput] = useState("");
-  const [previousChats ] = useState<Chat[]>([]);
+  const [previousChats] = useState<Chat[]>([]);
   const [suggestedTopics] = useState<string[]>([]);
 
   const navigate = useNavigate();
@@ -31,25 +37,25 @@ export default function Chat() {
     const fetchChats = async () => {
       try {
         const token = localStorage.getItem("token");
-  
+
         if (!token) {
           alert("No token found. Please log in.");
           navigate("/signup");
           return;
         }
-  
+
         const res = await axios.post(
           "https://backend.100xprojects.online/api/v1/user/check-auth",
           {}, // Empty body
           { headers: { Authorization: `Bearer ${token}` } }
         );
-  
+
         if (res.status === 200) {
           alert("Pls chat");
         }
       } catch (error) {
         console.error("Error fetching chat data:", error);
-  
+
         // Check for 401 or 403 to redirect the user
         if (axios.isAxiosError(error) && error.response?.status === 401) {
           alert("Unauthorized: Redirecting to sign-up");
@@ -59,15 +65,15 @@ export default function Chat() {
         }
       }
     };
-  
+
     fetchChats();
   }, []);
-  
+
   const handleSend = async () => {
     if (input.trim()) {
-      setMessages([
-        ...messages,
-        { id: messages.length + 1, content: input, sender: "user" },
+      setMessages((prev) => [
+        ...prev,
+        { id: prev.length + 1, content: input, sender: "user" },
       ]);
       setInput("");
 
