@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import axios from 'axios'
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   })
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -18,12 +21,26 @@ export default function SignIn() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Here you would typically send the form data to your backend for authentication
-    console.log('Form submitted:', formData)
-  }
+    // Here you would typically send the form data to your backend
+    console.log('Form submitted:', formData.email, formData.password)
 
+    const response = await axios.post("https://backend.100xprojects.online/api/v1/user/signin", formData)
+      
+
+    if (response.status != 201) {
+        alert("something went wrong");
+        return;
+    }
+
+    localStorage.setItem('token', response.data.token);
+
+    alert("you are logged in");
+
+    navigate('/chat');
+
+  }
   return (
     <div className="container mx-auto px-6 py-12">
       <Card className="max-w-md mx-auto">
